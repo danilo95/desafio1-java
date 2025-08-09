@@ -57,4 +57,7 @@ public class DepartamentosServlet  extends HttpServlet {
         }
         resp.sendRedirect(req.getContextPath() + "/departamentos");
     }
+
+
+
 }
