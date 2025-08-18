@@ -27,12 +27,12 @@ public class DepartamentoFormServlet extends HttpServlet {
         departamentoDAO.setDataSource(ds);
     }
 
-    // Mostrar formulario (nuevo o editar)
+    // Mostrar formulario
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String servletPath = req.getServletPath(); // valido para /departamentos/nuevo o /departamentos/editar
+        String servletPath = req.getServletPath();
 
         if ("/departamentos/editar".equals(servletPath)) {
             String idStr = req.getParameter("id");
@@ -47,7 +47,7 @@ public class DepartamentoFormServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/departamentos");
                     return;
                 }
-                req.setAttribute("departamento", d); // para poblar el form
+                req.setAttribute("departamento", d);
             } catch (NumberFormatException e) {
                 resp.sendRedirect(req.getContextPath() + "/departamentos");
                 return;
@@ -65,7 +65,7 @@ public class DepartamentoFormServlet extends HttpServlet {
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-        String idStr = req.getParameter("id"); // presente en editar
+        String idStr = req.getParameter("id");
         String nombre = req.getParameter("nombre");
         String descripcion = req.getParameter("descripcion");
 
