@@ -18,7 +18,7 @@ import java.util.List;
 @WebServlet(name = "ContratacionesServlet", urlPatterns = {"/contrataciones"})
 public class ContratacionesServlet extends HttpServlet {
 
-    @Resource(lookup = "jdbc/mysql")          // ⬅️ MISMO recurso JNDI que el resto de la app
+    @Resource(lookup = "jdbc/mysql")
     private DataSource ds;
 
     private ContratacionDAO contratacionDAO;
@@ -35,7 +35,7 @@ public class ContratacionesServlet extends HttpServlet {
         cargoDAO = new CargoDAO();
         tipoContratacionDAO = new TipoContratacionDAO();
 
-        // Inyectar el mismo DataSource a todos los DAO
+        // Inyecta el mismo DataSource a todos los DAO
         contratacionDAO.setDataSource(ds);
         departamentoDAO.setDataSource(ds);
         empleadoDAO.setDataSource(ds);
