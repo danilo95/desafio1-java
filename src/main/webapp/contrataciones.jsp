@@ -39,7 +39,7 @@
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/empleados">Empleados</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/departamentos">Departamentos</a></li>
                 <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/contrataciones">Contrataciones</a></li>
-                <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/tipos-contratacion">Tipo contratacion</a></li>
+                <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/cargo">Cargos</a></li>
             </ul>
 
         </div>
@@ -49,7 +49,7 @@
 <div class="container">
     <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="h3 mb-3">Contrataciones</h1>
-        <a class="btn btn-success" href="${pageContext.request.contextPath}/contrataciones/nuevo">
+        <a class="btn btn-success" href="${pageContext.request.contextPath}/contrataciones/nueva">
             <i class="bi bi-plus-circle"></i> Nueva Contratacion
         </a>
     </div>
