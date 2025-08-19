@@ -27,12 +27,11 @@ public class DepartamentoFormServlet extends HttpServlet {
         departamentoDAO.setDataSource(ds);
     }
 
-    // Mostrar formulario (nuevo o editar)
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String servletPath = req.getServletPath(); // valido para /departamentos/nuevo o /departamentos/editar
+        String servletPath = req.getServletPath();
 
         if ("/departamentos/editar".equals(servletPath)) {
             String idStr = req.getParameter("id");
@@ -47,7 +46,7 @@ public class DepartamentoFormServlet extends HttpServlet {
                     resp.sendRedirect(req.getContextPath() + "/departamentos");
                     return;
                 }
-                req.setAttribute("departamento", d); // para poblar el form
+                req.setAttribute("departamento", d);
             } catch (NumberFormatException e) {
                 resp.sendRedirect(req.getContextPath() + "/departamentos");
                 return;
@@ -59,17 +58,15 @@ public class DepartamentoFormServlet extends HttpServlet {
         req.getRequestDispatcher("/departamentos-form.jsp").forward(req, resp);
     }
 
-    // Guardar para crear o editar
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-        String idStr = req.getParameter("id"); // presente en editar
+        String idStr = req.getParameter("id");
         String nombre = req.getParameter("nombre");
         String descripcion = req.getParameter("descripcion");
 
-        // Validaciones
         if (nombre == null || nombre.trim().isEmpty()) {
             req.setAttribute("error", "El nombre es obligatorio.");
             // volver a llenarlo
@@ -87,7 +84,6 @@ public class DepartamentoFormServlet extends HttpServlet {
 
         try {
             if (idStr != null && !idStr.trim().isEmpty()) {
-                // Editar
                 int id = Integer.parseInt(idStr);
                 Departamento d = new Departamento();
                 d.setIdDepartamento(id);
@@ -95,7 +91,6 @@ public class DepartamentoFormServlet extends HttpServlet {
                 d.setDescripcionDepartamento(descripcion != null ? descripcion.trim() : null);
                 departamentoDAO.update(d);
             } else {
-                // Crear
                 Departamento d = new Departamento();
                 d.setNombreDepartamento(nombre.trim());
                 d.setDescripcionDepartamento(descripcion != null ? descripcion.trim() : null);

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Contratacion {
+
     private int idContratacion;
     private int idDepartamento;
     private int idEmpleado;
@@ -13,11 +14,25 @@ public class Contratacion {
     private BigDecimal salario;
     private boolean estado;
 
-    // !IMPORTANT: Campos de solo visualización porque son joins no puedo modificarlos directamente
     private String nombreDepartamento;
     private String nombreEmpleado;
     private String nombreCargo;
     private String nombreTipoContratacion;
+
+    public Contratacion() {
+    }
+
+    public Contratacion(int idContratacion, int idDepartamento, int idEmpleado, int idCargo,
+                        int idTipoContratacion, Date fechaContratacion, BigDecimal salario, boolean estado) {
+        this.idContratacion = idContratacion;
+        this.idDepartamento = idDepartamento;
+        this.idEmpleado = idEmpleado;
+        this.idCargo = idCargo;
+        this.idTipoContratacion = idTipoContratacion;
+        this.fechaContratacion = fechaContratacion;
+        this.salario = salario;
+        this.estado = estado;
+    }
 
     public int getIdContratacion() { return idContratacion; }
     public void setIdContratacion(int idContratacion) { this.idContratacion = idContratacion; }
