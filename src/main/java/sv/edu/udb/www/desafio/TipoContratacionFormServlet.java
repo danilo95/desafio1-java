@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @WebServlet(name = "TipoContratacionFormServlet", urlPatterns = {"/tipos-contratacion/nuevo", "/tipos-contratacion/editar"})
 public class TipoContratacionFormServlet extends HttpServlet {
 
-    @Resource(lookup = "jdbc/mysql2")
+    @Resource(lookup = "jdbc/mysql")
     private DataSource ds;
 
     private TipocontratacionDAO tipoDAO;
