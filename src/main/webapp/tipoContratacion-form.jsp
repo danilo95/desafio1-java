@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: danil
-  Date: 9/8/2025
-  Time: 03:44
+  User: Admin
+  Date: 15/8/2025
+  Time: 00:05
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html; charset=UTF-8" %>
@@ -11,7 +11,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title><c:choose><c:when test="${not empty departamento}">Editar</c:when><c:otherwise>Nuevo</c:otherwise></c:choose> Departamento</title>
+  <title><c:choose><c:when test="${not empty tipo}">Editar</c:when><c:otherwise>Nuevo</c:otherwise></c:choose> Tipo de Contratación</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -44,11 +44,11 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <h1 class="h3 mb-0">
       <c:choose>
-        <c:when test="${not empty departamento}">Editar Departamento</c:when>
-        <c:otherwise>Nuevo Departamento</c:otherwise>
+        <c:when test="${not empty tipo}">Editar Tipo de Contratación</c:when>
+        <c:otherwise>Nuevo Tipo de Contratación</c:otherwise>
       </c:choose>
     </h1>
-    <a href="${pageContext.request.contextPath}/departamentos" class="btn btn-outline-secondary">
+    <a href="${pageContext.request.contextPath}/tipos-contratacion" class="btn btn-outline-secondary">
       <i class="bi bi-arrow-left"></i> Volver
     </a>
   </div>
@@ -57,28 +57,23 @@
     <div class="alert alert-danger">${error}</div>
   </c:if>
 
-  <form method="post" action="${pageContext.request.contextPath}<c:choose><c:when test='${not empty departamento}'>/departamentos/editar</c:when><c:otherwise>/departamentos/nuevo</c:otherwise></c:choose>">
-    <c:if test="${not empty departamento}">
-      <input type="hidden" name="id" value="${departamento.idDepartamento}" />
+  <form method="post" action="${pageContext.request.contextPath}<c:choose><c:when test='${not empty tipo}'>/tipos-contratacion/editar</c:when><c:otherwise>/tipos-contratacion/nuevo</c:otherwise></c:choose>">
+    <c:if test="${not empty tipo}">
+      <input type="hidden" name="id" value="${tipo.idTipoContratacion}" />
     </c:if>
 
     <div class="mb-3">
-      <label class="form-label">Nombre <span class="text-danger">*</span></label>
+      <label class="form-label">Tipo de Contratación <span class="text-danger">*</span></label>
       <input type="text" name="nombre" class="form-control"
-             value="<c:out value='${departamento.nombreDepartamento}'/>"
+             value="<c:out value='${tipo.tipoContratacion}'/>"
              required maxlength="50" />
       <div class="form-text">Máximo 50 caracteres.</div>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Descripción</label>
-      <textarea name="descripcion" class="form-control" rows="3" maxlength="65535"><c:out value='${departamento.descripcionDepartamento}'/></textarea>
     </div>
 
     <button type="submit" class="btn btn-primary">
       <i class="bi bi-save"></i>
       <c:choose>
-        <c:when test="${not empty departamento}">Guardar cambios</c:when>
+        <c:when test="${not empty tipo}">Guardar cambios</c:when>
         <c:otherwise>Crear</c:otherwise>
       </c:choose>
     </button>

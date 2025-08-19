@@ -1,10 +1,17 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Admin
+  Date: 14/8/2025
+  Time: 23:47
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Cargos</title>
+    <title>Tipos de Contratación</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -20,7 +27,6 @@
 </head>
 <body>
 
-<!-- Menú -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="#">Empresa</a>
@@ -32,28 +38,23 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/empleados">Empleados</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/departamentos">Departamentos</a></li>
-                <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/cargo">Cargos</a></li>
+                <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/contrataciones">Contrataciones</a></li>
+                <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/tipos-contratacion">Tipos de Contratación</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <!-- Incluir formulario solo si se está creando o editando -->
-    <c:if test="${accion == 'nuevo' || accion == 'editar'}">
-        <jsp:include page="nuevoCargo.jsp" />
-    </c:if>
-
     <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="h3 mb-3">Cargos</h1>
-        <a class="btn btn-success" href="${pageContext.request.contextPath}/cargo?action=nuevo">
-            <i class="bi bi-plus-circle"></i> Nuevo Cargo
+        <h1 class="h3 mb-3">Tipos de Contratación</h1>
+        <a class="btn btn-success" href="${pageContext.request.contextPath}/tipos-contratacion/nuevo">
+            <i class="bi bi-plus-circle"></i> Nuevo
         </a>
     </div>
-
     <c:choose>
-        <c:when test="${empty cargos}">
-            <div class="alert alert-info">No hay cargos registrados.</div>
+        <c:when test="${empty tiposContratacion}">
+            <div class="alert alert-info">No hay tipos de contratación.</div>
         </c:when>
         <c:otherwise>
             <div class="table-responsive">
@@ -61,36 +62,29 @@
                     <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Jefatura</th>
+                        <th>Tipo de Contratación</th>
                         <th class="text-center" style="width: 160px;">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="c" items="${cargos}">
+                    <c:forEach items="${tiposContratacion}" var="t">
                         <tr>
-                            <td>${c.idCargo}</td>
-                            <td>${c.cargo}</td>
-                            <td>${c.descripcionCargo}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${c.jefatura}">Sí</c:when>
-                                    <c:otherwise>No</c:otherwise>
-                                </c:choose>
-                            </td>
+                            <td>${t.idTipoContratacion}</td>
+                            <td>${t.tipoContratacion}</td>
                             <td class="text-center table-actions">
                                 <a class="btn btn-sm btn-outline-primary"
-                                   href="${pageContext.request.contextPath}/cargo?action=editar&id=${c.idCargo}"
+                                   href="${pageContext.request.contextPath}/tipos-contratacion/editar?id=${t.idTipoContratacion}"
                                    title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a class="btn btn-sm btn-outline-danger"
-                                   href="${pageContext.request.contextPath}/cargo?action=eliminar&id=${c.idCargo}"
-                                   onclick="return confirm('¿Seguro que quieres eliminar este cargo?');"
-                                   title="Eliminar">
-                                    <i class="bi bi-trash3"></i>
-                                </a>
+                                <form method="post" action="${pageContext.request.contextPath}/tipos-contratacion"
+                                      onsubmit="return confirm('¿Deseas eliminar este tipo de contratación?');">
+                                    <input type="hidden" name="accion" value="eliminar" />
+                                    <input type="hidden" name="id" value="${t.idTipoContratacion}" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>

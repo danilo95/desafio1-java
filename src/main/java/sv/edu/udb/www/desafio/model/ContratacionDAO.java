@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class ContratacionDAO {
     private DataSource ds;
@@ -50,6 +51,88 @@ public class ContratacionDAO {
             }
         }
         return lista;
+    }
+
+    public Contratacion findById(int idContratacion) throws SQLException {
+        String sql =
+                "SELECT c.idContratacion, " +
+                        "       c.idDepartamento, d.nombreDepartamento, " +
+                        "       c.idEmpleado, e.nombrePersona AS nombreEmpleado, " +
+                        "       c.idCargo, ca.cargo AS nombreCargo, " +
+                        "       c.idTipoContratacion, tc.tipoContratacion AS nombreTipoContratacion, " +
+                        "       c.fechaContratacion, c.salario, c.estado " +
+                        "FROM Contrataciones c " +
+                        "JOIN Departamento d ON d.idDepartamento = c.idDepartamento " +
+                        "JOIN Empleados e ON e.idEmpleado = c.idEmpleado " +
+                        "JOIN Cargos ca ON ca.idCargo = c.idCargo " +
+                        "JOIN TipoContratacion tc ON tc.idTipoContratacion = c.idTipoContratacion " +
+                        "WHERE c.idContratacion = ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idContratacion);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Contratacion c = new Contratacion();
+                    c.setIdContratacion(rs.getInt("idContratacion"));
+                    c.setIdDepartamento(rs.getInt("idDepartamento"));
+                    c.setNombreDepartamento(rs.getString("nombreDepartamento"));
+                    c.setIdEmpleado(rs.getInt("idEmpleado"));
+                    c.setNombreEmpleado(rs.getString("nombreEmpleado"));
+                    c.setIdCargo(rs.getInt("idCargo"));
+                    c.setNombreCargo(rs.getString("nombreCargo"));
+                    c.setIdTipoContratacion(rs.getInt("idTipoContratacion"));
+                    c.setNombreTipoContratacion(rs.getString("nombreTipoContratacion"));
+                    c.setFechaContratacion(rs.getDate("fechaContratacion"));
+                    c.setSalario(rs.getBigDecimal("salario"));
+                    c.setEstado(rs.getBoolean("estado"));
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+
+    public int insert(Contratacion c) throws SQLException {
+        String sql = "INSERT INTO Contrataciones " +
+                "(idDepartamento, idEmpleado, idCargo, idTipoContratacion, fechaContratacion, salario, estado) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, c.getIdDepartamento());
+            ps.setInt(2, c.getIdEmpleado());
+            ps.setInt(3, c.getIdCargo());
+            ps.setInt(4, c.getIdTipoContratacion());
+            ps.setDate(5, c.getFechaContratacion());
+            ps.setBigDecimal(6, c.getSalario());
+            ps.setBoolean(7, c.isEstado());
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                try (ResultSet keys = ps.getGeneratedKeys()) {
+                    if (keys.next()) return keys.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public boolean update(Contratacion c) throws SQLException {
+        String sql = "UPDATE Contrataciones SET " +
+                "idDepartamento = ?, idEmpleado = ?, idCargo = ?, idTipoContratacion = ?, " +
+                "fechaContratacion = ?, salario = ?, estado = ? " +
+                "WHERE idContratacion = ?";
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, c.getIdDepartamento());
+            ps.setInt(2, c.getIdEmpleado());
+            ps.setInt(3, c.getIdCargo());
+            ps.setInt(4, c.getIdTipoContratacion());
+            ps.setDate(5, c.getFechaContratacion());
+            ps.setBigDecimal(6, c.getSalario());
+            ps.setBoolean(7, c.isEstado());
+            ps.setInt(8, c.getIdContratacion());
+            return ps.executeUpdate() > 0;
+        }
     }
 
     public boolean delete(int idContratacion) throws SQLException {
