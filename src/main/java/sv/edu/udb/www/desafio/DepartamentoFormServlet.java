@@ -27,7 +27,6 @@ public class DepartamentoFormServlet extends HttpServlet {
         departamentoDAO.setDataSource(ds);
     }
 
-    // Mostrar formulario
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -59,7 +58,6 @@ public class DepartamentoFormServlet extends HttpServlet {
         req.getRequestDispatcher("/departamentos-form.jsp").forward(req, resp);
     }
 
-    // Guardar para crear o editar
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -69,7 +67,6 @@ public class DepartamentoFormServlet extends HttpServlet {
         String nombre = req.getParameter("nombre");
         String descripcion = req.getParameter("descripcion");
 
-        // Validaciones
         if (nombre == null || nombre.trim().isEmpty()) {
             req.setAttribute("error", "El nombre es obligatorio.");
             // volver a llenarlo
@@ -87,7 +84,6 @@ public class DepartamentoFormServlet extends HttpServlet {
 
         try {
             if (idStr != null && !idStr.trim().isEmpty()) {
-                // Editar
                 int id = Integer.parseInt(idStr);
                 Departamento d = new Departamento();
                 d.setIdDepartamento(id);
@@ -95,7 +91,6 @@ public class DepartamentoFormServlet extends HttpServlet {
                 d.setDescripcionDepartamento(descripcion != null ? descripcion.trim() : null);
                 departamentoDAO.update(d);
             } else {
-                // Crear
                 Departamento d = new Departamento();
                 d.setNombreDepartamento(nombre.trim());
                 d.setDescripcionDepartamento(descripcion != null ? descripcion.trim() : null);

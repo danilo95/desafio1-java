@@ -8,77 +8,107 @@ import java.util.List;
 public class CargoDAO {
     private DataSource dataSource;
 
-    public void setDataSource(DataSource dataSource) {
+    public CargoDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public List<Cargo> findAll() throws SQLException {
+    // Listar todos los cargos
+    public List<Cargo> listar() throws SQLException {
         List<Cargo> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Cargos";
+        String sql = "SELECT idCargo, cargo, descripcionCargo, jefatura FROM cargos ORDER BY idCargo";
+
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
-                Cargo c = new Cargo(
-                        rs.getInt("idCargo"),
-                        rs.getString("cargo"),
-                        rs.getString("descripcionCargo"),
-                        rs.getBoolean("jefatura")
-                );
+                Cargo c = new Cargo();
+                c.setIdCargo(rs.getInt("idCargo"));
+                c.setCargo(rs.getString("cargo"));
+                c.setDescripcionCargo(rs.getString("descripcionCargo"));
+                c.setJefatura(rs.getBoolean("jefatura"));
                 lista.add(c);
             }
         }
         return lista;
     }
 
-    public Cargo findById(int id) throws SQLException {
-        String sql = "SELECT * FROM Cargos WHERE idCargo = ?";
+    // Insertar un nuevo cargo
+    public void insertar(Cargo c) throws SQLException {
+        String sql = "INSERT INTO cargos (cargo, descripcionCargo, jefatura) VALUES (?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, c.getCargo());
+            ps.setString(2, c.getDescripcionCargo());
+            ps.setBoolean(3, c.isJefatura());
+            ps.executeUpdate();
+        }
+    }
+
+    // Obtener cargo por ID
+    public Cargo obtenerCargo(int idCargo) throws SQLException {
+        String sql = "SELECT idCargo, cargo, descripcionCargo, jefatura FROM cargos WHERE idCargo = ?";
+        Cargo c = null;
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCargo);
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Cargo(
-                            rs.getInt("idCargo"),
-                            rs.getString("cargo"),
-                            rs.getString("descripcionCargo"),
-                            rs.getBoolean("jefatura")
-                    );
+                    c = new Cargo();
+                    c.setIdCargo(rs.getInt("idCargo"));
+                    c.setCargo(rs.getString("cargo"));
+                    c.setDescripcionCargo(rs.getString("descripcionCargo"));
+                    c.setJefatura(rs.getBoolean("jefatura"));
                 }
             }
         }
-        return null;
+        return c;
     }
 
-    public void insert(Cargo cargo) throws SQLException {
-        String sql = "INSERT INTO Cargos (cargo, descripcionCargo, jefatura) VALUES (?, ?, ?)";
+    // Actualizar cargo
+    public void actualizar(Cargo c) throws SQLException {
+        String sql = "UPDATE cargos SET cargo = ?, descripcionCargo = ?, jefatura = ? WHERE idCargo = ?";
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, cargo.getCargo());
-            stmt.setString(2, cargo.getDescripcionCargo());
-            stmt.setBoolean(3, cargo.isJefatura());
-            stmt.executeUpdate();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, c.getCargo());
+            ps.setString(2, c.getDescripcionCargo());
+            ps.setBoolean(3, c.isJefatura());
+            ps.setInt(4, c.getIdCargo());
+            ps.executeUpdate();
         }
     }
 
-    public void update(Cargo cargo) throws SQLException {
-        String sql = "UPDATE Cargos SET cargo=?, descripcionCargo=?, jefatura=? WHERE idCargo=?";
+    // Eliminar cargo
+    public void eliminar(int idCargo) throws SQLException {
+        String sql = "DELETE FROM cargos WHERE idCargo = ?";
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, cargo.getCargo());
-            stmt.setString(2, cargo.getDescripcionCargo());
-            stmt.setBoolean(3, cargo.isJefatura());
-            stmt.setInt(4, cargo.getIdCargo());
-            stmt.executeUpdate();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCargo);
+            ps.executeUpdate();
         }
+
+        // Reenumerar IDs después de eliminar
+        reenumerarIds();
     }
 
-    public void delete(int id) throws SQLException {
-        String sql = "DELETE FROM Cargos WHERE idCargo=?";
+    // Reenumerar IDs consecutivos y ajustar AUTO_INCREMENT
+    private void reenumerarIds() throws SQLException {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+             Statement st = conn.createStatement()) {
+
+            // Inicializar contador
+            st.execute("SET @contador = 0");
+
+            // Actualizar IDs de forma consecutiva
+            st.execute("UPDATE cargos SET idCargo = (@contador := @contador + 1) ORDER BY idCargo");
+
+            // Ajustar AUTO_INCREMENT al siguiente valor
+            st.execute("ALTER TABLE cargos AUTO_INCREMENT = 1");
         }
     }
 }

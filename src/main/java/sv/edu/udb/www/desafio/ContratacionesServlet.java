@@ -32,18 +32,15 @@ public class ContratacionesServlet extends HttpServlet {
         contratacionDAO = new ContratacionDAO();
         departamentoDAO = new DepartamentoDAO();
         empleadoDAO = new EmpleadoDAO();
-        cargoDAO = new CargoDAO();
+        cargoDAO = new CargoDAO(ds);
         tipoContratacionDAO = new TipoContratacionDAO();
 
-        // Inyecta el mismo DataSource a todos los DAO
         contratacionDAO.setDataSource(ds);
         departamentoDAO.setDataSource(ds);
         empleadoDAO.setDataSource(ds);
-        cargoDAO.setDataSource(ds);
         tipoContratacionDAO.setDataSource(ds);
     }
 
-    // GET: lista, new, edit, delete (navegación)
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,12 +66,10 @@ public class ContratacionesServlet extends HttpServlet {
         }
     }
 
-    // POST: insert/update (form submit)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Decidimos insert/update por presencia de idContratacion
         String idStr = request.getParameter("idContratacion");
         try {
             if (idStr == null || idStr.trim().isEmpty()) {
@@ -87,8 +82,6 @@ public class ContratacionesServlet extends HttpServlet {
         }
     }
 
-    // ====== Implementaciones ======
-
     private void listContrataciones(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         List<Contratacion> lista = contratacionDAO.findAll();
@@ -98,10 +91,9 @@ public class ContratacionesServlet extends HttpServlet {
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        // Cargar catálogos
         request.setAttribute("listaDepartamentos", departamentoDAO.findAll());
         request.setAttribute("listaEmpleados", empleadoDAO.findAll());
-        request.setAttribute("listaCargos", cargoDAO.findAll());
+        request.setAttribute("listaCargos", cargoDAO.listar());
         request.setAttribute("listaTipos", tipoContratacionDAO.findAll());
 
         request.getRequestDispatcher("/contrataciones-form.jsp").forward(request, response);
@@ -116,7 +108,6 @@ public class ContratacionesServlet extends HttpServlet {
         c.setIdTipoContratacion(Integer.parseInt(request.getParameter("idTipoContratacion")));
         c.setFechaContratacion(Date.valueOf(request.getParameter("fechaContratacion")));
         c.setSalario(new BigDecimal(request.getParameter("salario")));
-        // En el form el estado viene como "1" o "0"
         c.setEstado("1".equals(request.getParameter("estado")));
 
         contratacionDAO.insert(c);
@@ -128,10 +119,9 @@ public class ContratacionesServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         Contratacion c = contratacionDAO.findById(id);
 
-        // Cargar catálogos
         request.setAttribute("listaDepartamentos", departamentoDAO.findAll());
         request.setAttribute("listaEmpleados", empleadoDAO.findAll());
-        request.setAttribute("listaCargos", cargoDAO.findAll());
+        request.setAttribute("listaCargos", cargoDAO.listar());
         request.setAttribute("listaTipos", tipoContratacionDAO.findAll());
 
         request.setAttribute("contratacion", c);

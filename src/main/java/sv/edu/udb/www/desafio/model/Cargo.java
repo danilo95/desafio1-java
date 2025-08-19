@@ -6,8 +6,10 @@ public class Cargo {
     private String descripcionCargo;
     private boolean jefatura;
 
+    // Constructor vacío
     public Cargo() {}
 
+    // Constructor completo
     public Cargo(int idCargo, String cargo, String descripcionCargo, boolean jefatura) {
         this.idCargo = idCargo;
         this.cargo = cargo;
@@ -15,6 +17,7 @@ public class Cargo {
         this.jefatura = jefatura;
     }
 
+    // Getters y setters
     public int getIdCargo() {
         return idCargo;
     }
@@ -45,5 +48,15 @@ public class Cargo {
 
     public void setJefatura(boolean jefatura) {
         this.jefatura = jefatura;
+    }
+
+    @Override
+    public String toString() {
+        return "Cargo{" +
+                "idCargo=" + idCargo +
+                ", cargo='" + cargo + '\'' +
+                ", descripcionCargo='" + descripcionCargo + '\'' +
+                ", jefatura=" + jefatura +
+                '}';
     }
 }

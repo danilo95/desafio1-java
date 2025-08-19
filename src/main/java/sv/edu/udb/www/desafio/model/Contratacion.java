@@ -14,7 +14,6 @@ public class Contratacion {
     private BigDecimal salario;
     private boolean estado;
 
-    // Campos de solo visualización (no se persisten en esta tabla)
     private String nombreDepartamento;
     private String nombreEmpleado;
     private String nombreCargo;
@@ -35,7 +34,6 @@ public class Contratacion {
         this.estado = estado;
     }
 
-    // Getters & Setters persistentes
     public int getIdContratacion() { return idContratacion; }
     public void setIdContratacion(int idContratacion) { this.idContratacion = idContratacion; }
 
@@ -60,7 +58,6 @@ public class Contratacion {
     public boolean isEstado() { return estado; }
     public void setEstado(boolean estado) { this.estado = estado; }
 
-    // Getters & Setters solo visualización
     public String getNombreDepartamento() { return nombreDepartamento; }
     public void setNombreDepartamento(String nombreDepartamento) { this.nombreDepartamento = nombreDepartamento; }
 

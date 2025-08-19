@@ -23,7 +23,6 @@ public class ContratacionDAO {
         c.setSalario(rs.getBigDecimal("salario"));
         c.setEstado(rs.getBoolean("estado"));
 
-        // Campos extra de solo visualización
         c.setNombreDepartamento(rs.getString("nombreDepartamento"));
         c.setNombreEmpleado(rs.getString("nombreEmpleado"));
         c.setNombreCargo(rs.getString("nombreCargo"));
