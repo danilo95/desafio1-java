@@ -40,6 +40,7 @@
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/departamentos">Departamentos</a></li>
                 <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/contrataciones">Contrataciones</a></li>
                 <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/tipos-contratacion">Tipos de Contratación</a></li>
+                <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/cargo">Cargos</a></li>
             </ul>
         </div>
     </div>
