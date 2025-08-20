@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         version="4.0"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+
+    <!-- Página de bienvenida -->
+    <welcome-file-list>
+        <welcome-file>empleados</welcome-file> <!-- o index.jsp -->
+    </welcome-file-list>
+
+    <!-- Referencia opcional al DataSource -->
+    <!--
+    <resource-ref>
+        <res-ref-name>jdbc/EmpresaDS</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+    </resource-ref>
+    -->
+    <context-param>
+        <param-name>jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>faces/index.xhtml</welcome-file>
+    </welcome-file-list>
+
+</web-app>
