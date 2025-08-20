@@ -71,6 +71,7 @@
                         <th>Usuario</th>
                         <th>Teléfono</th>
                         <th>Correo</th>
+                        <th>Fecha de Nacimiento</th>
                         <th class="text-center" style="width: 160px;">Acciones</th>
                     </tr>
                     </thead>
@@ -83,6 +84,7 @@
                             <td>${e.usuario}</td>
                             <td>${e.numeroTelefono}</td>
                             <td>${e.correoInstitucional}</td>
+                            <td>${e.fechaNacimiento}</td>
                             <td class="text-center table-actions">
                                 <!-- Editar -->
                                 <a class="btn btn-sm btn-outline-primary"
