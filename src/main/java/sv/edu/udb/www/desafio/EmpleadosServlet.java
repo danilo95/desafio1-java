@@ -58,6 +58,7 @@ public class EmpleadosServlet extends HttpServlet {
                 }
             }
         }
+
         // Vuelvo a llamar empleados para actualizar
         resp.sendRedirect(req.getContextPath() + "/empleados");
     }
